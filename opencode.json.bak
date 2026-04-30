@@ -1,0 +1,235 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "deepseek/deepseek-v4-pro",
+  "small_model": "deepseek/deepseek-v4-flash",
+  "default_agent": "build",
+  "instructions": [
+    "./rules/*.md",
+    "instructions/INSTRUCTIONS.md"
+  ],
+  "plugin": [
+    "./plugins"
+  ],
+  "agent": {
+    "build": {
+      "description": "Primary coding agent for development work",
+      "mode": "primary",
+      "model": "deepseek/deepseek-v4-flash",
+      "permission": {
+        "edit": "allow",
+        "bash": "allow",
+        "write": "allow",
+        "read": "allow",
+        "changed-files": "allow"
+      }
+    },
+    "planner": {
+      "description": "Expert planning specialist for complex features and refactoring",
+      "mode": "subagent",
+      "model": "deepseek/deepseek-v4-pro",
+      "prompt": "{file:prompts/agents/planner.txt}",
+      "permission": {
+        "read": "allow",
+        "bash": "allow",
+        "write": "deny",
+        "edit": "deny"
+      }
+    },
+    "architect": {
+      "description": "Software architecture specialist for system design and technical decisions",
+      "mode": "subagent",
+      "model": "deepseek/deepseek-v4-pro",
+      "prompt": "{file:prompts/agents/architect.txt}",
+      "permission": {
+        "read": "allow",
+        "bash": "allow",
+        "write": "deny",
+        "edit": "deny"
+      }
+    },
+    "code-reviewer": {
+      "description": "Expert code review specialist for quality, security, and maintainability",
+      "mode": "subagent",
+      "model": "deepseek/deepseek-v4-pro",
+      "prompt": "{file:prompts/agents/code-reviewer.txt}",
+      "permission": {
+        "read": "allow",
+        "bash": "allow",
+        "write": "deny",
+        "edit": "deny"
+      }
+    },
+    "security-reviewer": {
+      "description": "Security vulnerability detection and remediation specialist",
+      "mode": "subagent",
+      "model": "deepseek/deepseek-v4-pro",
+      "prompt": "{file:prompts/agents/security-reviewer.txt}",
+      "permission": {
+        "read": "allow",
+        "bash": "allow",
+        "write": "allow",
+        "edit": "allow"
+      }
+    },
+    "tdd-guide": {
+      "description": "Test-Driven Development specialist enforcing write-tests-first methodology",
+      "mode": "subagent",
+      "model": "deepseek/deepseek-v4-pro",
+      "prompt": "{file:prompts/agents/tdd-guide.txt}",
+      "permission": {
+        "read": "allow",
+        "write": "allow",
+        "edit": "allow",
+        "bash": "allow"
+      }
+    },
+    "build-error-resolver": {
+      "description": "Build and TypeScript error resolution specialist",
+      "mode": "subagent",
+      "model": "deepseek/deepseek-v4-flash",
+      "prompt": "{file:prompts/agents/build-error-resolver.txt}",
+      "permission": {
+        "read": "allow",
+        "write": "allow",
+        "edit": "allow",
+        "bash": "allow"
+      }
+    },
+    "e2e-runner": {
+      "description": "End-to-end testing specialist using Playwright",
+      "mode": "subagent",
+      "model": "deepseek/deepseek-v4-flash",
+      "prompt": "{file:prompts/agents/e2e-runner.txt}",
+      "permission": {
+        "read": "allow",
+        "write": "allow",
+        "edit": "allow",
+        "bash": "allow"
+      }
+    },
+    "doc-updater": {
+      "description": "Documentation and codemap specialist",
+      "mode": "subagent",
+      "model": "deepseek/deepseek-v4-flash",
+      "prompt": "{file:prompts/agents/doc-updater.txt}",
+      "permission": {
+        "read": "allow",
+        "write": "allow",
+        "edit": "allow",
+        "bash": "allow"
+      }
+    },
+    "refactor-cleaner": {
+      "description": "Dead code cleanup and consolidation specialist",
+      "mode": "subagent",
+      "model": "deepseek/deepseek-v4-flash",
+      "prompt": "{file:prompts/agents/refactor-cleaner.txt}",
+      "permission": {
+        "read": "allow",
+        "write": "allow",
+        "edit": "allow",
+        "bash": "allow"
+      }
+    }
+  },
+  "command": {
+    "plan": {
+      "description": "Create a detailed implementation plan for complex features",
+      "template": "{file:commands/plan.md}\n\n$ARGUMENTS",
+      "agent": "planner",
+      "subtask": true
+    },
+    "tdd": {
+      "description": "Enforce TDD workflow with 80%+ test coverage",
+      "template": "{file:commands/tdd.md}\n\n$ARGUMENTS",
+      "agent": "tdd-guide",
+      "subtask": true
+    },
+    "code-review": {
+      "description": "Review code for quality, security, and maintainability",
+      "template": "{file:commands/code-review.md}\n\n$ARGUMENTS",
+      "agent": "code-reviewer",
+      "subtask": true
+    },
+    "security": {
+      "description": "Run comprehensive security review",
+      "template": "{file:commands/security.md}\n\n$ARGUMENTS",
+      "agent": "security-reviewer",
+      "subtask": true
+    },
+    "build-fix": {
+      "description": "Fix build and TypeScript errors with minimal changes",
+      "template": "{file:commands/build-fix.md}\n\n$ARGUMENTS",
+      "agent": "build-error-resolver",
+      "subtask": true
+    },
+    "e2e": {
+      "description": "Generate and run E2E tests with Playwright",
+      "template": "{file:commands/e2e.md}\n\n$ARGUMENTS",
+      "agent": "e2e-runner",
+      "subtask": true
+    },
+    "refactor-clean": {
+      "description": "Remove dead code and consolidate duplicates",
+      "template": "{file:commands/refactor-clean.md}\n\n$ARGUMENTS",
+      "agent": "refactor-cleaner",
+      "subtask": true
+    },
+    "orchestrate": {
+      "description": "Orchestrate multiple agents for complex tasks",
+      "template": "{file:commands/orchestrate.md}\n\n$ARGUMENTS",
+      "agent": "planner",
+      "subtask": true
+    },
+    "learn": {
+      "description": "Extract patterns and learnings from session",
+      "template": "{file:commands/learn.md}\n\n$ARGUMENTS"
+    },
+    "checkpoint": {
+      "description": "Save verification state and progress",
+      "template": "{file:commands/checkpoint.md}\n\n$ARGUMENTS"
+    },
+    "verify": {
+      "description": "Run verification loop",
+      "template": "{file:commands/verify.md}\n\n$ARGUMENTS"
+    },
+    "eval": {
+      "description": "Run evaluation against criteria",
+      "template": "{file:commands/eval.md}\n\n$ARGUMENTS"
+    },
+    "update-docs": {
+      "description": "Update documentation",
+      "template": "{file:commands/update-docs.md}\n\n$ARGUMENTS",
+      "agent": "doc-updater",
+      "subtask": true
+    },
+    "update-codemaps": {
+      "description": "Update codemaps",
+      "template": "{file:commands/update-codemaps.md}\n\n$ARGUMENTS",
+      "agent": "doc-updater",
+      "subtask": true
+    },
+    "test-coverage": {
+      "description": "Analyze test coverage",
+      "template": "{file:commands/test-coverage.md}\n\n$ARGUMENTS",
+      "agent": "tdd-guide",
+      "subtask": true
+    },
+    "setup-pm": {
+      "description": "Configure package manager",
+      "template": "{file:commands/setup-pm.md}\n\n$ARGUMENTS"
+    }
+  },
+  "mcp": {
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "ctx7sk-6b7ad073-450c-4f21-b970-cdd185983e0f"
+      }
+    }
+  },
+  "permission": {
+    "mcp_*": "ask"
+  }
+}
