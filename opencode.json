@@ -5,12 +5,7 @@
   "default_agent": "code",
   "instructions": ["./rules/*.md", "instructions/INSTRUCTIONS.md"],
   "plugin": [
-    "./plugins",
-    "./plugins/ecc-hooks.ts",
-    "@dietrichgebertponytail",
-    "opencode-ralph-loop",
-    "superpowers@git+https://github.com/obra/superpowers.git",
-    "./plugins/graphify.js"
+    "superpowers@git+https://github.com/obra/superpowers.git"
   ],
   "mode": {
     "code": {

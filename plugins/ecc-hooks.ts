@@ -34,7 +34,7 @@ function notify(title: string, body: string) {
   );
 }
 
-export default (async () => {
+export const EccHooksPlugin: Plugin = async () => {
   return {
     // Gantikan @mohak34/opencode-notifier (dep npm + install tiap start).
     // 20 baris ini cukup: idle + permission = 2 momen yang bikin user nunggu.
@@ -93,4 +93,15 @@ export default (async () => {
       }
     },
   };
-}) satisfies Plugin;
+};
+
+async function setup(_ctx: any) {
+  // V2 host reads default.setup; hooks live in server() below (V1-compat path).
+  return;
+}
+
+export default {
+  id: "ecc-hooks",
+  server: EccHooksPlugin,
+  setup,
+};

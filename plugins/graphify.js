@@ -28,3 +28,14 @@ export const GraphifyPlugin = async ({ directory }) => {
     },
   };
 };
+
+async function setup(_ctx) {
+  // V2 host reads default.setup; hooks live in server() above (V1-compat path).
+  return;
+}
+
+export default {
+  id: "graphify",
+  server: GraphifyPlugin,
+  setup,
+};
