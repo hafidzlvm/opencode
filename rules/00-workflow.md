@@ -28,7 +28,7 @@ sudah jelas, run command tunggal.
 | Trigger                                        | Skill                                              |
 | ---------------------------------------------- | -------------------------------------------------- |
 | Bug / gagal tes / perilaku aneh                | `systematic-debugging` SEBELUM usulkan fix         |
-| Fitur / bugfix apapun                          | `test-driven-development` (tes dulu, RED→GREEN)    |
+| Fitur / bugfix non-trivial                     | `test-driven-development` (tes dulu, RED→GREEN)    |
 | Mau klaim "selesai / done / fixed"             | `verification-before-completion` (run bukti dulu)  |
 | Fitur >1 hari / kerja paralel                  | `using-git-worktrees`                              |
 | Review feedback datang / mau minta review      | `receiving-code-review` / `requesting-code-review` |
@@ -126,3 +126,10 @@ tanpa query.
 Hook `ecc-hooks` sudah auto-format + warning `console.log`. Sisanya manual:
 `npx tsc --noEmit` → hapus `console.log` → `security-reviewer` kalau sentuh
 auth/input/query → update todos.
+
+## 6. Session-start & pasca-compaction
+
+- Awal sesi / setelah compaction (konteks diringkas, workflow terlupa):
+  baca ulang `rules/*.md` sebelum lanjut kerja.
+- Kalau kerja dengan graph: `graphify reflect --if-stale` + baca
+  `graphify-out/reflections/LESSONS.md` (murah, no-op kalau masih fresh).

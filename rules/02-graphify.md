@@ -48,5 +48,7 @@ graphify reflect --if-stale  # baca graphify-out/reflections/LESSONS.md di awal 
 ## 6. Output & batas
 
 - `graphify-out/graph.html` (community view, >5000 nodes teragregasi), `GRAPH_REPORT.md`, `graph.json`.
+- Jangan commit artifact graph (`graph.html`/`graph.json`, belasan MB) → masuk `.gitignore`. `manifest.json` + `cost.json` boleh ikut (murah, untuk `--update`).
+- Graph basi setelah >~10 file berubah → `/graphify <path> --update` di awal sesi.
 - Health warning (dangling/collapsed edges) → tampilkan di ringkasan, jangan abort.
 - Full build mahal (contoh: 1141 file / 2.6M kata → 17 chunk ekstraksi). Korpus >500 file / >2M kata → tawarkan subfolder dulu.
