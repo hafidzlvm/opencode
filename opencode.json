@@ -7,9 +7,10 @@
   "plugin": [
     "./plugins",
     "./plugins/ecc-hooks.ts",
-    "@dietrichgebert/ponytail",
+    "@dietrichgebertponytail",
     "opencode-ralph-loop",
-    "superpowers@git+https://github.com/obra/superpowers.git"
+    "superpowers@git+https://github.com/obra/superpowers.git",
+    "./plugins/graphify.js"
   ],
   "mode": {
     "code": {
