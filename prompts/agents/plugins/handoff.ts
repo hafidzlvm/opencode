@@ -1,0 +1,1 @@
+/home/hafdiz/opencode-handoff/src/plugin.ts

@@ -1,21 +1,119 @@
-
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "deepseek/deepseek-v4-pro",
-  "small_model": "deepseek/deepseek-v4-flash",
-  "default_agent": "build",
-  "instructions": [
-    "./rules/*.md",
-    "instructions/INSTRUCTIONS.md"
-  ],
+  // "model": "opencode/muse-spark-1.3",
+  // "small_model": "opencode/muse-spark-1.3",
+  "default_agent": "code",
+  "instructions": ["./rules/*.md", "instructions/INSTRUCTIONS.md"],
   "plugin": [
-    "./plugins"
+    "./plugins",
+    "./plugins/ecc-hooks.ts",
+    "@dietrichgebert/ponytail",
+    "opencode-ralph-loop",
+    "superpowers@git+https://github.com/obra/superpowers.git"
   ],
   "mode": {
     "code": {
       "description": "Primary coding agent for development work",
       "mode": "primary",
-      "model": "deepseek/deepseek-v4-flash",
+      // "model": "opencode/muse-spark-1.3",
+      "tools": {
+        "read": true,
+        "grep": true,
+        "glob": true,
+        "edit": true,
+        "bash": true,
+        "write": true,
+        "patch": true,
+        "todowrite": true,
+        "webfetch": true
+      }
+    },
+    "night-shift": {
+      "description": "Unattended long-run agent: small verified steps, commits locally, never pushes",
+      "mode": "primary",
+      "prompt": "{file:prompts/agents/night-shift.txt}",
+      "tools": {
+        "read": true,
+        "grep": true,
+        "glob": true,
+        "edit": true,
+        "bash": true,
+        "write": true,
+        "patch": true,
+        "todowrite": true,
+        "webfetch": true
+      },
+      "permission": {
+        "edit:**/.env*": "deny",
+        "read:**/.env*": "deny",
+        "read:**/*secret*": "deny",
+        "read:**/*credential*": "deny",
+        "read:**/.ssh/**": "deny",
+        "read:**/*.pem": "deny",
+        "read:**/*.key": "deny",
+        "read:**/node_modules/**": "deny",
+        "mcp_*": "allow",
+        "bash": {
+          "git push*": "deny",
+          "rm -rf *": "deny",
+          "*": "allow"
+        }
+      }
+    },
+    "night-shift-session": {
+      "description": "Jarvis dalam sesi: loop improvisasi mandiri atas transkrip berjalan, berhenti + analisa kalau habis bahan",
+      "mode": "primary",
+      "prompt": "{file:prompts/agents/night-shift-session.txt}",
+      "tools": {
+        "read": true,
+        "grep": true,
+        "glob": true,
+        "edit": true,
+        "bash": true,
+        "write": true,
+        "patch": true,
+        "todowrite": true,
+        "webfetch": true
+      },
+      "permission": {
+        "edit:**/.env*": "deny",
+        "read:**/.env*": "deny",
+        "read:**/*secret*": "deny",
+        "read:**/*credential*": "deny",
+        "read:**/.ssh/**": "deny",
+        "read:**/*.pem": "deny",
+        "read:**/*.key": "deny",
+        "read:**/node_modules/**": "deny",
+        "mcp_*": "allow",
+        "bash": {
+          "git push*": "deny",
+          "rm -rf *": "deny",
+          "*": "allow"
+        }
+      }
+    },
+    "code-with-plan": {
+      "description": "Primary coding agent for development work with Expert planning specialist for complex features and refactoring",
+      "mode": "primary",
+      "model": "opencode/muse-spark-1.3",
+      "prompt": "{file:prompts/agents/planner.txt}",
+      "tools": {
+        "read": true,
+        "grep": true,
+        "glob": true,
+        "edit": true,
+        "bash": true,
+        "write": true,
+        "patch": true,
+        "todowrite": true,
+        "webfetch": true
+      }
+    },
+    "code-with-reviewer": {
+      "description": "Primary coding agent for development work with Expert code review specialist for quality, security, and maintainability",
+      "mode": "primary",
+      "model": "opencode/muse-spark-1.3",
+      "prompt": "{file:prompts/agents/code-reviewer.txt}",
       "tools": {
         "read": true,
         "grep": true,
@@ -31,7 +129,7 @@
     "planner": {
       "description": "Expert planning specialist for complex features and refactoring",
       "mode": "subagent",
-      "model": "deepseek/deepseek-v4-pro",
+      "model": "opencode/muse-spark-1.3",
       "prompt": "{file:prompts/agents/planner.txt}",
       "tools": {
         "read": true,
@@ -48,7 +146,7 @@
     "code-reviewer": {
       "description": "Expert code review specialist for quality, security, and maintainability",
       "mode": "subagent",
-      "model": "deepseek/deepseek-v4-pro",
+      "model": "opencode/muse-spark-1.3",
       "prompt": "{file:prompts/agents/code-reviewer.txt}",
       "tools": {
         "read": true,
@@ -65,7 +163,7 @@
     "security-reviewer": {
       "description": "Security vulnerability detection and remediation specialist",
       "mode": "subagent",
-      "model": "deepseek/deepseek-v4-pro",
+      "model": "opencode/muse-spark-1.3",
       "prompt": "{file:prompts/agents/security-reviewer.txt}",
       "tools": {
         "read": true,
@@ -82,7 +180,7 @@
     "tdd-guide": {
       "description": "Test-Driven Development specialist enforcing write-tests-first methodology",
       "mode": "subagent",
-      "model": "deepseek/deepseek-v4-pro",
+      "model": "opencode/muse-spark-1.3",
       "prompt": "{file:prompts/agents/tdd-guide.txt}",
       "tools": {
         "read": true,
@@ -99,7 +197,7 @@
     "build-error-resolver": {
       "description": "Build and TypeScript error resolution specialist",
       "mode": "subagent",
-      "model": "deepseek/deepseek-v4-flash",
+      "model": "opencode/muse-spark-1.3",
       "prompt": "{file:prompts/agents/build-error-resolver.txt}",
       "tools": {
         "read": true,
@@ -116,7 +214,7 @@
     "e2e-runner": {
       "description": "End-to-end testing specialist using Playwright",
       "mode": "subagent",
-      "model": "deepseek/deepseek-v4-flash",
+      "model": "opencode/muse-spark-1.3",
       "prompt": "{file:prompts/agents/e2e-runner.txt}",
       "tools": {
         "read": true,
@@ -133,7 +231,7 @@
     "doc-updater": {
       "description": "Documentation and codemap specialist",
       "mode": "subagent",
-      "model": "deepseek/deepseek-v4-flash",
+      "model": "opencode/muse-spark-1.3",
       "prompt": "{file:prompts/agents/doc-updater.txt}",
       "tools": {
         "read": true,
@@ -150,7 +248,7 @@
     "refactor-cleaner": {
       "description": "Dead code cleanup and consolidation specialist",
       "mode": "subagent",
-      "model": "deepseek/deepseek-v4-flash",
+      "model": "opencode/muse-spark-1.3",
       "prompt": "{file:prompts/agents/refactor-cleaner.txt}",
       "tools": {
         "read": true,
@@ -251,6 +349,28 @@
     "setup-pm": {
       "description": "Configure package manager",
       "template": "{file:commands/setup-pm.md}\n\n$ARGUMENTS"
+    },
+    "debug": {
+      "description": "Debug sistematis — root cause dulu, baru fix",
+      "template": "{file:commands/debug.md}\n\n$ARGUMENTS",
+      "subtask": true
+    },
+    "ship": {
+      "description": "Ship — verifikasi, review, putuskan merge/rebase/PR",
+      "template": "{file:commands/ship.md}\n\n$ARGUMENTS",
+      "subtask": true
+    },
+    "night-shift": {
+      "description": "Siapkan night-task untuk jalan tanpa pengawasan (full-auto default)",
+      "template": "{file:commands/night-shift.md}\n\n$ARGUMENTS",
+      "agent": "planner",
+      "subtask": true
+    },
+    "night-shift-session": {
+      "description": "Jarvis dalam sesi — loop improvisasi mandiri atas transkrip berjalan",
+      "template": "{file:commands/night-shift-session.md}\n\n$ARGUMENTS",
+      "agent": "night-shift-session",
+      "subtask": true
     }
   },
   "mcp": {
@@ -258,11 +378,55 @@
       "type": "remote",
       "url": "https://mcp.context7.com/mcp",
       "headers": {
-        "CONTEXT7_API_KEY": "ctx7sk-6b7ad073-450c-4f21-b970-cdd185983e0f"
+        "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
       }
+    },
+    "playwright": {
+      "type": "local",
+      "command": ["npx", "-y", "@playwright/mcp"],
+      "enabled": true
+    },
+    "github": {
+      "type": "remote",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "headers": {
+        "Authorization": "Bearer {env:GITHUB_TOKEN}"
+      },
+      "enabled": false
     }
   },
   "permission": {
+    "read:**/.env": "deny",
+    "read:**/.env.*": "deny",
+    "read:**/.env.local": "deny",
+    "read:**/.env.production": "deny",
+    "read:**/.env.development": "deny",
+    "read:**/*secret*": "deny",
+    "read:**/*credential*": "deny",
+    "read:**/.git/**": "deny",
+    "read:**/node_modules/**": "deny",
+    "read:**/*.pem": "deny",
+    "read:**/*.key": "deny",
+    "read:**/.ssh/**": "deny",
+    "external_directory": {
+      "~/.config/opencode/rules/*": "allow",
+      "~/.config/opencode/prompts/*": "allow",
+      "~/.config/opencode/prompts/agents/*": "allow",
+      "~/.config/opencode/instructions/*": "allow",
+      "~/.config/opencode/commands/*": "allow",
+      "~/.config/opencode/skills/*": "allow"
+    },
+    "edit:**/.env*": "deny",
+    "bash": {
+      "git *": "allow",
+      "gh *": "allow",
+      "npx tsc --noEmit": "allow",
+      "rm -rf *": "deny",
+      "*": "allow"
+    },
     "mcp_*": "ask"
-  }
+  },
+  "formatter": true,
+  "compaction": { "auto": true, "tail_turns": 15 },
+  "tool_output": { "max_lines": 200, "max_bytes": 8192 }
 }
