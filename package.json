@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@dietrichgebert/ponytail": "^4.10.0",
-    "@opencode-ai/plugin": "1.4.1"
+    "@opencode-ai/plugin": "1.4.1",
+    "@zenobius/opencode-background": "0.1.0-alpha.2"
   }
 }
