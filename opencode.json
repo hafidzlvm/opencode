@@ -5,6 +5,7 @@
   "default_agent": "code",
   "instructions": ["./rules/*.md", "instructions/INSTRUCTIONS.md"],
   "plugin": [
+    "./plugins/handoff/plugin.ts",
     "superpowers@git+https://github.com/obra/superpowers.git"
   ],
   "mode": {
