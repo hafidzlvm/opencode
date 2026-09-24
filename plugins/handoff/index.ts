@@ -43,7 +43,22 @@ export default Plugin.define({
         name: "handoff",
         description: "Continue work in a new session with context carried over",
         execute: async ({ sessionID, prompt }) => {
-          const goal = (prompt as { text?: string }).text?.trim() ?? ""
+          const raw = (prompt as { text?: string }).text?.trim() ?? ""
+          // prompt.text may be "" (bare /handoff), "goal", or "/handoff goal"
+          const goal = raw.replace(/^\/handoff\b\s*/i, "").trim()
+          let title = goal.slice(0, 60)
+          if (!title) {
+            // Bare /handoff: inherit the source session's title instead of
+            // the generic fallback, so every handoff is identifiable.
+            try {
+              const src: any = await ctx.session.get({ sessionID })
+              const st = String(src?.title ?? "").trim()
+              if (st) title = st.slice(0, 60)
+            } catch {
+              // keep fallback
+            }
+          }
+          title = title || "Handoff"
           let messages: any[] = []
           try {
             messages = [...(await ctx.session.context({ sessionID }))]
@@ -62,7 +77,7 @@ export default Plugin.define({
             `When you lack specific information, use the read_session tool with sessionID ${sessionID} to fetch more.`,
           ].join("\n")
           const created: any = await ctx.session.create({
-            title: goal.slice(0, 60) || "Handoff",
+            title,
           })
           const newID: string = created?.id ?? created?.sessionID
           await ctx.session.prompt({ sessionID: newID, text: body })
