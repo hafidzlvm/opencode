@@ -5,7 +5,8 @@
   "default_agent": "code",
   "instructions": ["./rules/*.md", "instructions/INSTRUCTIONS.md"],
   "plugin": [
-    "./plugins/handoff/plugin.ts",
+    "./plugins/graph-guard",
+    "./plugins/handoff",
     "superpowers@git+https://github.com/obra/superpowers.git"
   ],
   "mode": {

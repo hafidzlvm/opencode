@@ -31,12 +31,14 @@ graphify path "<NodeA>" "<NodeB>"   # shortest path antar konsep
 graphify explain "<NodeName>"       # semua koneksi 1 node, 3-5 kalimat
 ```
 
-## 4. Update inkremental (jangan full rebuild)
+## 4. Update otomatis (git hooks, bukan manual)
 
-```bash
-/graphify <path> --update       # hanya file baru/berubah (baca manifest)
-/graphify <path> --cluster-only # ulangi clustering saja
-```
+`graphify hook install` sudah dipasang: `post-commit` + `post-checkout`
+rebuild di background (resource-guarded, `timeout 300`, log
+`~/.cache/graphify-rebuild.log`). Jangan taruh `graphify update` di hook
+per-turn — terlalu lambat (~10s+). Aturan staleness manual (>~10 file →
+`--update`) hanya fallback kalau hooks belum terpasang di repo itu
+(cek: `graphify hook status`). Escape: `GRAPHIFY_SKIP_HOOK=1 git commit`.
 
 ## 5. Feedback loop (wajib setelah jawab)
 
@@ -49,6 +51,16 @@ graphify reflect --if-stale  # baca graphify-out/reflections/LESSONS.md di awal 
 
 - `graphify-out/graph.html` (community view, >5000 nodes teragregasi), `GRAPH_REPORT.md`, `graph.json`.
 - Jangan commit artifact graph (`graph.html`/`graph.json`, belasan MB) → masuk `.gitignore`. `manifest.json` + `cost.json` boleh ikut (murah, untuk `--update`).
-- Graph basi setelah >~10 file berubah → `/graphify <path> --update` di awal sesi.
+- Rantai fallback: `graphify query` → miss → `grep` (jangan sebaliknya).
+- Panggilan mahal yang dihindari: `graphify query` BFS (~1500 token, 87-378 nodes) untuk lookup simbol spesifik — pakai `path`/`explain` yang sempit, atau `grep` + `--budget` kecil. `GRAPH_REPORT.md` dibaca sebagian saja, bukan penuh.
+- Health warning (dangling/collapsed edges) → tampilkan di ringkasan, jangan abort.
+
+## 7. Graph-guard (enforcement otomatis)
+
+Plugin `plugins/graph-guard` mencegat tool `grep`: kalau graph lokal
+mengandung pattern → call ditolak dengan jawaban graph inline (tanpa retry
+loop). Selain itu lolos diam-diam. Escape hatch: selipkan `graph-tried` di
+pattern, atau pakai bash grep untuk string literal / config / log (yang
+memang tidak bisa di-index AST).
 - Health warning (dangling/collapsed edges) → tampilkan di ringkasan, jangan abort.
 - Full build mahal (contoh: 1141 file / 2.6M kata → 17 chunk ekstraksi). Korpus >500 file / >2M kata → tawarkan subfolder dulu.
