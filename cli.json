@@ -14,6 +14,7 @@
   },
   "animations": true,
   "keybinds": {
-    "agent.cycle": "tab,shift+tab"
+    "agent.cycle": "tab",
+    "agent.cycle.reverse": "shift+tab"
   }
 }
