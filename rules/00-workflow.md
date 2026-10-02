@@ -105,6 +105,7 @@ jebol token. Butuh yang tidak ada di daftar → `find-skills`.
 | Kode harus ikut docs resmi versi aktif | `source-driven-development`    |
 | Perubahan multi-file                   | `incremental-implementation`   |
 | Bingung skill apa yang cocok           | `using-agent-skills`           |
+| Tulis/review/refactor kode (anti-overengineering) | `karpathy-guidelines` |
 
 ### Graphify-first — standar hemat token (30.6x)
 
