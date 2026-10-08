@@ -27,6 +27,7 @@ sudah jelas, run command tunggal.
 
 | Trigger                                        | Skill                                              |
 | ---------------------------------------------- | -------------------------------------------------- |
+| Mulai kerja apapun / ragu skill apa yang cocok | `using-superpowers` (cek skill DULU sebelum aksi)  |
 | Bug / gagal tes / perilaku aneh                | `systematic-debugging` SEBELUM usulkan fix         |
 | Fitur / bugfix non-trivial                     | `test-driven-development` (tes dulu, RED→GREEN)    |
 | Mau klaim "selesai / done / fixed"             | `verification-before-completion` (run bukti dulu)  |
