@@ -3,7 +3,7 @@
   // "model": "opencode/muse-spark-1.3",
   // "small_model": "opencode/muse-spark-1.3",
   "default_agent": "code",
-  "instructions": ["./rules/*.md", "instructions/INSTRUCTIONS.md"],
+  "instructions": ["./rules/*.md", "instructions/INSTRUCTIONS.md", "./archive-rules/*.md"],
   "plugin": [
     "./plugins/graph-guard",
     "./plugins/handoff",
