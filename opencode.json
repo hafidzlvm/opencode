@@ -9,6 +9,7 @@
     "./plugins/handoff",
     "superpowers@git+https://github.com/obra/superpowers.git"
   ],
+  "skills": ["./skills-antigravity-awesome"],
   "mode": {
     "code": {
       "description": "Primary coding agent for development work",
@@ -412,7 +413,8 @@
       "~/.config/opencode/prompts/agents/*": "allow",
       "~/.config/opencode/instructions/*": "allow",
       "~/.config/opencode/commands/*": "allow",
-      "~/.config/opencode/skills/*": "allow"
+      "~/.config/opencode/skills/*": "allow",
+      "~/.config/opencode/skills-antigravity-awesome/*": "allow"
     },
     "edit:**/.env*": "deny",
     "bash": {
