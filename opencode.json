@@ -9,7 +9,7 @@
     "./plugins/handoff",
     "superpowers@git+https://github.com/obra/superpowers.git"
   ],
-  "skills": ["./skills-antigravity-awesome"],
+  "skills": ["~/.config/opencode/skills-antigravity-awesome"],
   "mode": {
     "code": {
       "description": "Primary coding agent for development work",
